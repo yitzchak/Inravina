@@ -6,7 +6,7 @@
   :homepage "https://yitzchak.github.io/Inravina/"
   :bug-tracker "https://github.com/yitzchak/Inravina/issues"
   :in-order-to ((asdf:test-op (asdf:test-op #:inravina/test)))
-  :depends-on (#:incless
+  :depends-on (;#:incless
                (:feature (:not :sicl) #:trivial-gray-streams)
                #:trivial-stream-column
                (:feature :sbcl #:sb-introspect))
@@ -30,7 +30,7 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (:alexandria :parachute)
+    (#:alexandria #:parachute)
   :perform (asdf:test-op (op c) (uiop:symbol-call :parachute :test :inravina/test))
   :components
     ((:module code
@@ -50,7 +50,7 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (:inravina)
+    (#:inravina)
   :components
     ((:module code
       :components
@@ -65,7 +65,7 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (:inravina)
+    (#:inravina)
   :components
     ((:module code
       :components
@@ -74,3 +74,19 @@
         :components
           ((:file "packages-intrinsic")
            (:file "print")))))))
+
+(asdf:defsystem #:inravina/ext.intrinsic.shim
+  :description "Inravina/ext intrinsic shim"
+  :author "Tarn W. Burton"
+  :license "MIT"
+  :depends-on
+    (#:incless-shim #:inravina)
+  :components
+    ((:module code
+      :components
+      ((:module ext
+        :serial t
+        :components
+          ((:file "packages-intrinsic")
+           (:file "shim")
+           (:file "print")))))))           

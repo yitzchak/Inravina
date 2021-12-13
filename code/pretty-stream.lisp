@@ -337,7 +337,7 @@
     (client stream mode instruction (previous-instruction (eql nil)) allow-break-p)
   (declare (ignore client allow-break-p mode))
   (setf (break-column instruction)
-          (trivial-stream-column:scale-column (trivial-stream-column:line-column (target stream))
+          (trivial-stream-column:scale-column (or (trivial-stream-column:line-column (target stream)) 0)
                                               (target stream)
                                               :new-style (style instruction))
         (column instruction) (break-column instruction)
