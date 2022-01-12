@@ -44,3 +44,22 @@
        (funcall func stream object)
        (call-next-method)))
   object)
+
+(defmethod incless:do-print-unreadable-object
+    ((client client) object stream type identity body-fun)
+  (cond (*print-pretty*
+         (pprint-logical-block (client stream nil :prefix "#<" :suffix ">")
+           (when type
+             (incless:print-unreadable-type client object stream)
+             (when (or body-fun identity)
+               (write-char #\Space stream))
+               (pprint-newline client stream :linear))
+           (when body-fun
+             (funcall body-fun)
+             (when identity
+               (write-char #\Space stream))
+               (pprint-newline client stream :linear))
+           (when identity
+             (incless:print-unreadable-identity client object stream))))
+        ((call-next-method))))
+

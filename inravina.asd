@@ -30,7 +30,7 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (#:alexandria #:parachute)
+    (#:alexandria #:inravina #:parachute)
   :perform (asdf:test-op (op c) (uiop:symbol-call :parachute :test :inravina/test))
   :components
     ((:module code
@@ -50,7 +50,8 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (#:incless/ext.extrinsic #:inravina)
+    (#:incless/ext.extrinsic
+     #:inravina)
   :components
     ((:module code
       :components
@@ -58,6 +59,7 @@
         :serial t
         :components
           ((:file "packages-extrinsic")
+           (:file "non-shim")
            (:file "print")))))))
 
 (asdf:defsystem #:inravina/ext.intrinsic
@@ -65,7 +67,8 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (#:incless/ext.intrinsic #:inravina)
+    (#:incless/ext.intrinsic
+     #:inravina)
   :components
     ((:module code
       :components
@@ -73,6 +76,7 @@
         :serial t
         :components
           ((:file "packages-intrinsic")
+           (:file "non-shim")
            (:file "print")))))))
 
 (asdf:defsystem #:inravina/ext.shim
@@ -80,7 +84,9 @@
   :author "Tarn W. Burton"
   :license "MIT"
   :depends-on
-    (#:incless/ext.shim #:inravina)
+    (#:incless/ext.shim
+     #:inravina
+     #:trivial-package-locks)
   :components
     ((:module code
       :components

@@ -1,26 +1,29 @@
 (in-package #:inravina/ext)
 
-(let (#+sbcl (sb-ext:*muffled-warnings* 'warning))
-#+sbcl (eval-when (:compile-toplevel :load-toplevel :execute)
-         (sb-ext:add-implementation-package "INRAVINA/EXT" "COMMON-LISP"))
+(defmacro without-package-locks (&body body)
+  `(trivial-package-locks:with-unlocked-packages ("COMMON-LISP") ,@body))
 
-(fmakunbound 'pprint-dispatch)
+;(let (#+sbcl (sb-ext:*muffled-warnings* 'warning))
 
-(defun pprint-dispatch (object &optional table)
-  (declare (ignore object table))
-  (values nil nil))
+(without-package-locks
 
-(fmakunbound 'copy-pprint-dispatch)
-(fmakunbound 'set-pprint-dispatch)
+  (fmakunbound 'pprint-dispatch)
 
-(declaim (ftype (function (&optional (or null inravina::dispatch-table))
-                          inravina::dispatch-table)
-                copy-pprint-dispatch)
-         (ftype (function (t &optional (or null inravina::dispatch-table))
-                          (values (or function symbol) boolean))
-                pprint-dispatch)
-         (ftype (function (t (or function symbol) &optional real inravina::dispatch-table)
-                          null)
-                set-pprint-dispatch)
-         (type inravina::dispatch-table *print-pprint-dispatch*)))
+  (defun pprint-dispatch (object &optional table)
+    (declare (ignore object table))
+    (values nil nil))
+
+  (fmakunbound 'copy-pprint-dispatch)
+  (fmakunbound 'set-pprint-dispatch)
+
+  (declaim (ftype (function (&optional (or null inravina::dispatch-table))
+                            inravina::dispatch-table)
+                  copy-pprint-dispatch)
+           (ftype (function (t &optional (or null inravina::dispatch-table))
+                            (values (or function symbol) boolean))
+                  pprint-dispatch)
+           (ftype (function (t (or function symbol) &optional real inravina::dispatch-table)
+                            null)
+                  set-pprint-dispatch)
+           (type inravina::dispatch-table *print-pprint-dispatch*)))
 
